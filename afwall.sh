@@ -69,6 +69,7 @@ echo
 echo -e "\033[1;31mNote: YouTube, Chromium extension search and the other google services aren't accessable anymore!"
 echo
 echo
+echo -n ":"
 while read Option
 do
 case $Option in
