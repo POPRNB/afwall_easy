@@ -69,15 +69,11 @@ echo
 echo -e "\033[1;31mNote: YouTube, Chromium extension search and the other google services aren't accessable anymore!"
 echo
 echo
-echo -e "One exception will be added for Google IP 104.197.59.8"
-echo -e "This is neccessary to get updates from https://download.cyanogenmod.org\033[0m"
-echo -n ":"
 while read Option
 do
 case $Option in
 y|Y)
 echo Adding Google ASN to list
-echo "$""IPTABLES -A "afwall" --destination "104.197.59.8" -j RETURN" >>  ./afwscripts/aafwall.sh
 curl --silent 'https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=AS15169' | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}' | uniq > google.txt
 python2 \script/google.py >>  ./afwscripts/google
 split -a 1 -d -l 100 ./afwscripts/google ./afwscripts/google
