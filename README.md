@@ -2,6 +2,9 @@
 https://github.com/mglinux/afwall_easy
 
 
+Stopped from further development! A much better script ist available here: https://notabug.org/maloe/ASN_IPFire_Script
+
+
 Bash script for generating AS Block lists and setting DNS Server for Android AFWall.
 
 It generates AFWall scripts for blocking connections to google, facebook, microsoft and a few others.
