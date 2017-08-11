@@ -35,3 +35,4 @@ $IP6TABLES -P FORWARD DROP
 $IP6TABLES -P OUTPUT DROP
 
 # DNS Server and custom rules generated from the script
+ 

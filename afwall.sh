@@ -1,15 +1,8 @@
 #!/bin/bash
 clear
 echo "=================================================="
-echo -e "\033[3;34m BLOCK AS SCRIPT AND SET DNS FOR ANDROID AFWALL\033[0m"
-echo 
-echo
-echo
-echo "Python2 and python2-ipaddress are required !!"
-echo
+echo -e "\033[3;34m BLOCK ASNs SCRIPT AND SET DNS FOR ANDROID AFWALL\033[0m"
 echo "=================================================="
-echo
-echo
 echo
 echo
 echo "--------------------------------------------------"
@@ -18,24 +11,43 @@ echo
 echo "Visit https://github.com/ukanth/afwall"
 echo
 echo
-echo "Script is based on infos and python scripts from Mike Kuketz. Thx!"
+echo "Script is based on infos and python scripts from Mike Kuketz,"
+echo "https://www.kuketz-blog.de/"
 echo
-echo "Visit https://www.kuketz-blog.de/"
+echo "and was further enhanced by maloe"
+echo "https://notabug.org/maloe/ASN_IPFire_Script"
+echo 
+echo
+echo "Great job guys!"
+echo
 echo "--------------------------------------------------"
 echo
 echo
 read -n 1 -s -p "Press any key to continue"
 clear
-mkdir ./afwscripts
-rm afwscripts.txt
-cp \script/default.list  ./afwscripts/aafwall.sh
-clear
-echo "Set DNS Server? Press key [1-3]"
+chmod +x asn_ipfire_beta.sh
+rm -R -f afwscripts
+mkdir afwscripts
+cp default ./afwscripts/aafwall.sh
+cp iptables_off.sh ./afwscripts
+echo "Set DNS Server? Press key [1-4]"
 echo
 echo
 echo "[1] Don't change DNS Server"
 echo "[2] 84.200.69.80 DNS Watch"
 echo "[3] 91.239.100.100 Censurfridns Denmark"
+echo "[4] Other DNS Server (ipfire wiki list)"
+echo
+echo "See http://wiki.ipfire.org/en/dns/public-servers"
+echo "It´s only an overview, not all listed servers are censorship-free!"
+echo "At least you should prefer dnssec validating servers."
+echo
+echo "--------------------------------------------------"
+echo "Important!!!!!"
+echo 
+echo "Set the DNS proxy to -Disable DNS via netd- (preferences->Binaries->DNS proxy)"
+echo "You must allow (Android 5+) -[0] (root) - Apps running as root- in afwall else dns resolving won´t work!"
+echo "--------------------------------------------------"
 echo
 echo -n ":"
 while read Option
@@ -56,159 +68,37 @@ echo "Setting Censurfridns Denmark"
 echo "$""IPTABLES -t nat -I OUTPUT -p tcp --dport 53 -j DNAT --to-destination 91.239.100.100:53" >>  ./afwscripts/aafwall.sh
 echo "$""IPTABLES -t nat -I OUTPUT -p udp --dport 53 -j DNAT --to-destination 91.239.100.100:53" >> ./afwscripts/aafwall.sh
 break
+;;
+4)
+echo "Please enter IPv4:"
+echo "e.g. 84.200.69.80"
+read ip
+echo
+echo $ip "will be set for dns"
+echo
+echo
+read -n 1 -s -p "Press any key to continue"
+echo "$""IPTABLES -t nat -I OUTPUT -p udp --dport 53 -j DNAT --to-destination $ip" >> ./afwscripts/aafwall.sh
+echo "$""IPTABLES -t nat -I OUTPUT -p tcp --dport 53 -j DNAT --to-destination $ip" >> ./afwscripts/aafwall.sh
+clear
+break
 esac
 done
-clear
-echo "Block ASNs:"
 echo
+echo "Now choose the companys you want to be blocked!"
 echo
+echo "Company names are handled case sensitive! (it´s Google not google)"
+echo "Seperate them by comma"
+echo "e.g. Google, Facebook, Samsung"
+read companys
+echo $companys "will be blocked"
 echo
-echo    "Block Google? y/n"
+read -n 1 -s -p "Press any key to continue"
 echo
-echo
-echo -e "\033[1;31mNote: YouTube, Chromium extension search and the other google services aren't accessable anymore!"
-echo
-echo
-echo -n ":"
-while read Option
-do
-case $Option in
-y|Y)
-echo Adding Google ASN to list
-curl --silent 'https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=AS15169' | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}' | uniq > google.txt
-python2 \script/google.py >>  ./afwscripts/google
-split -a 1 -d -l 100 ./afwscripts/google ./afwscripts/google
-rm ./afwscripts/google
-break
-;;
-n|N)
-break
-;;
-esac
-done
-clear
-echo    "Block Facebook? y/n"
-echo -n ":"
-while read Option
-do
-case $Option in
-y|Y)
-echo Adding Facebook ASN to list
-curl --silent 'https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=AS32934' | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}' | uniq > facebook.txt
-python2 \script/facebook.py >>  ./afwscripts/facebook
-split -a 1 -d -l 100 ./afwscripts/facebook ./afwscripts/facebook
-rm ./afwscripts/facebook
-break
-;;
-n|N)
-break
-;;
-esac
-done
-clear
-echo    "Block Samsung? y/n"
-echo -n ":"
-while read Option
-do
-case $Option in
-y|Y)
-echo Adding Samsung ASN to list
-curl --silent 'https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=AS6619' | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}' | uniq > samsung.txt
-python2 \script/samsung.py >> ./afwscripts/samsung
-split -a 1 -d -l 100 ./afwscripts/samsung ./afwscripts/samsung
-rm ./afwscripts/samsung
-break
-;;
-n|N)
-break
-;;
-esac
-done
-clear
-echo    "Block Apple? y/n"
-echo -n ":"
-while read Option
-do
-case $Option in
-y|Y)
-echo Adding Apple ASN to list
-curl --silent 'https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=AS714' | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}' | uniq > apple.txt
-python2 \script/apple.py >>  ./afwscripts/apple
-split -a 1 -d -l 100 ./afwscripts/apple ./afwscripts/apple
-rm ./afwscripts/apple
-break
-;;
-n|N)
-break
-;;
-esac
-done
-clear
-echo
-echo    "Block Amazon? y/n"
-echo
-echo
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-echo
-echo -e "\033[1;31mNote: The Amazon list is huge!"
-echo -e "If AFWall hangs or doesn't apply rules then restart script and skip Amazon!"
-echo -e ""
-echo -e "IMPORTANT: there are many amazon servers. Some services/pages won't function!" 
-echo -e "firefox addon searching, github downloads and several others\033[0m"
-echo 
-echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-echo
-echo -n ":"
-while read Option
-do
-case $Option in
-y|Y)
-echo Adding Amazon ASN to list
-curl --silent 'https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=AS16509' | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}' | uniq > amazon.txt
-python2 \script/amazon.py >>  ./afwscripts/amazon
-split -a 1 -d -l 100 ./afwscripts/amazon ./afwscripts/amazon
-rm ./afwscripts/amazon
-break
-;;
-n|N)
-break
-;;
-esac
-done
-clear
-echo    "Block Microsoft? y/n"
-echo -n ":"
-while read Option
-do
-case $Option in
-y|Y)
-echo Adding Microsoft ASN to list
-curl --silent 'https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=AS8075' | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}' | uniq > microsoft.txt
-python2 \script/microsoft.py >>  ./afwscripts/microsoft
-split -a 1 -d -l 100 ./afwscripts/microsoft ./afwscripts/microsoft
-rm ./afwscripts/microsoft
-break
-;;
-n|N)
-break
-;;
-esac
-done
-clear
-rm microsoft.txt
-rm amazon.txt
-rm apple.txt
-rm google.txt
-rm samsung.txt
-rm facebook.txt
-clear
-ls ./afwscripts >> list.txt
-awk '{print ". /system/afwscripts/" $0}' list.txt >> afwscripts.txt
-rm list.txt
-cp ./script/iptables_off.sh ./afwscripts/
+./asn_ipfire_beta.sh --afwall "$companys"
+mv afwall_rules.txt ./afwscripts/afwall_rules
 clear
 echo "End of script..."
-echo
 echo
 echo "Now copy the whole afwscripts folder to /system on your device."
 echo "Additionally transfer afwscripts.txt onto the device."
@@ -230,7 +120,7 @@ echo "Hint: See attached screenshot how it should look like!"
 echo
 echo "Afterwards press OK and wait until AFWall applied the rules!"
 echo 
-echo "Finally disable IPv6 Support in AFWall preferences->User Interface"
+echo "Finally block IPv6 in AFWall preferences->Rules/Connectivity"
 echo "Only IPv4 is working right now"
 echo
 echo
