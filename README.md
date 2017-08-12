@@ -9,8 +9,10 @@ It generates AFWall scripts for blocking connections to google, facebook, whatev
 This gets achieved through setting the corressponding iptables rules.
 
 
-*Extract afwall_easy.zip
+
 *Open a terminal window
+*git clone https://github.com/mglinux/afwall_easy.git
+*cd afwall_easy
 *Make the script executable with "chmod +x afwall.sh"
 *Run the script with ./afwall.sh
 
