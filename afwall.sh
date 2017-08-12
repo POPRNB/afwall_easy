@@ -86,10 +86,8 @@ esac
 done
 echo
 echo "Now choose the companys you want to be blocked!"
-echo
-echo "Company names are handled case sensitive! (it´s Google not google)"
-echo "Seperate them by comma"
-echo "e.g. Google, Facebook, Samsung"
+echo "Seperate them by comma or space"
+echo "e.g. Google, Facebook, Samsung or Google Facebook ..."
 read companys
 echo $companys "will be blocked"
 echo
