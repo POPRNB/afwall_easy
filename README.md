@@ -11,10 +11,15 @@ This gets achieved through setting the corressponding iptables rules.
 
 
 Open a terminal window
+
 git clone https://github.com/mglinux/afwall_easy.git
+
 cd afwall_easy
+
 Make the script executable with "chmod +x afwall.sh"
+
 Run the script with ./afwall.sh
+
 
 
 Set the DNS proxy to -Disable DNS via netd- (preferences->Binaries->DNS proxy)
