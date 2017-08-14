@@ -158,7 +158,7 @@ echo
 echo
 echo "Set the shutdown script path (user defined shutdown script)."
 echo
-echo "Enter this:   . /storage/emulated/0/afwscripts/iptables_off.sh"
+echo "Enter this:   . $path/afwscripts/iptables_off.sh"
 echo
 echo -e "\e[3;91mIMPORTANT: Don't forget the ". /" point-space-slash!!"
 echo -e "\e[0m"

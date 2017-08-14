@@ -1,0 +1,2 @@
+. /home/bla/afwscripts/aafwall.sh
+. /home/bla/afwscripts/iptables_off.sh
