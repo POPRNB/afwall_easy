@@ -5,7 +5,7 @@ Last update: 08/14/2017
 https://github.com/mglinux/afwall_easy
 
 
-Simple command line tool for generating ASN Block lists and DNS Server entry for Android AFWall.
+Simple script for generating ASN Block lists and DNS Server entry for Android AFWall.
 
 
 It generates AFWall scripts for blocking connections to google, facebook, whatever you want.
