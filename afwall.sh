@@ -25,9 +25,13 @@ echo
 echo
 read -n 1 -s -p "Press any key to continue"
 clear
+####make ASN fetching script executable####
 chmod +x asn_ipfire_beta.sh
+####delete and create folder to reset process####
+rm -f copy_paste.txt
 rm -R -f afwscripts
 mkdir afwscripts
+####copy common rules####
 cp default ./afwscripts/aafwall.sh
 cp iptables_off.sh ./afwscripts
 echo "Set DNS Server? Press key [1-4]"
@@ -43,12 +47,12 @@ echo "It´s only an overview, not all listed servers are censorship-free!"
 echo "At least you should prefer dnssec validating servers."
 echo
 echo "--------------------------------------------------"
-echo "Important!!!!!"
+echo -e "\e[3;91mImportant!!!!!"
 echo 
 echo "Set the DNS proxy to -Disable DNS via netd- (preferences->Binaries->DNS proxy)"
 echo "You must allow (Android 5+) -[0] (root) - Apps running as root- in afwall else dns resolving won´t work!"
 echo "--------------------------------------------------"
-echo
+echo -e "\e[0m"
 echo -n ":"
 while read Option
 do
@@ -84,7 +88,45 @@ clear
 break
 esac
 done
+clear
+path=/storage/emulated/0/
+echo "Now we need to set the Path to your internal storage"
+echo "Default used: /storage/emulated/0/"
 echo
+echo "Please check yourself what´s the right path for your device!"
+echo
+echo "[1] Keep default path /storage/emulated/0"
+echo "[2] Set different path"
+echo -n ":"
+while read Option2
+do
+case $Option2 in
+1)
+path=/storage/emulated/0
+echo "$path/afwscripts will be used"
+read -n 1 -s -p "Press any key to continue"
+break
+;;
+2) 
+clear
+ok=no
+while
+    echo "Please enter your path like /storage/sdcard - no / at the end!"
+    echo
+    read -p 'New path:' path
+    echo "Will use: $path/afwscripts"
+    read -p "Is this correct? [y/n] " yn
+    case $yn in
+        [Yy]* )  false;;
+        * )  true;;
+esac
+do
+    :
+done
+break
+esac
+done
+clear
 echo "Now choose the companys you want to be blocked!"
 echo "Seperate them by comma or space"
 echo "e.g. Google, Facebook, Samsung or Google Facebook ..."
@@ -93,45 +135,56 @@ echo $companys "will be blocked"
 echo
 read -n 1 -s -p "Press any key to continue"
 echo
+####start fetching ASNs####
 ./asn_ipfire_beta.sh --afwall "$companys"
 mv afwall_rules.txt ./afwscripts/afwall_rules
+#### split rules at 100 lines. Else afwall could fail on some devices####
+split -l 100 ./afwscripts/afwall_rules ./afwscripts/afwall_rules_
+rm ./afwscripts/afwall_rules
+ls -d ./afwscripts/* | xargs -n1 basename > ./afwscripts/cp.txt
+nl -s ". $path/afwscripts/" ./afwscripts/cp.txt | cut -c7- > copy_paste.txt
+rm ./afwscripts/cp.txt
 clear
 echo "End of script..."
 echo
-echo "Now copy the whole afwscripts folder to /system on your device."
-echo "Additionally transfer afwscripts.txt onto the device."
+echo "Now copy the whole afwscripts folder to $path on your device."
+echo "Additionally transfer copy_paste.txt onto the device."
 echo
-echo "Device: Open afwscripts.txt and copy all to the clipboard."
+echo "Device: Open copy_paste.txt and copy all to the clipboard."
 echo
 echo "Open AFWall and press the three dots in the top right corner and select"
 echo "<Set custom script>. Paste the contents of the clipboard to user defined script."
 echo 
 echo
-echo "Now you must set the shutdown script path (user defined shutdown script)."
+echo "Set the shutdown script path (user defined shutdown script)."
 echo
-echo "Enter this:   . /system/afwscripts/iptables_off.sh"
+echo "Enter this:   . /storage/emulated/0/afwscripts/iptables_off.sh"
 echo
-echo "IMPORTANT: Don't forget the ". /" point-space-slash!!"
-echo
+echo -e "\e[3;91mIMPORTANT: Don't forget the ". /" point-space-slash!!"
+echo -e "\e[0m"
 echo 
 echo "Hint: See attached screenshot how it should look like!"
 echo
 echo "Afterwards press OK and wait until AFWall applied the rules!"
-echo 
-echo "Finally block IPv6 in AFWall preferences->Rules/Connectivity"
-echo "Only IPv4 is working right now"
 echo
 echo
-echo "--------------------------------------------------------------------------"
-echo -e "\033[1;31mAFTER UPDATING YOUR SYSTEM CHECK IF /system/afwscripts IS STILL AVAILABLE."
-echo -e "ELSE YOU HAVE TO COPY OVER THE FOLDER TO /SYSTEM AGAIN!\033[0m"
-echo "--------------------------------------------------------------------------"
+read -n 1 -s -p "Press any key to continue"
+clear
 echo
 echo
+echo "Finally block IPv6 in AFWall preferences->Rules/Connectivity."
+echo "The afwall.sh script sets IPv6 to drop all too!"
 echo
-echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "Done!"
+echo
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo
 echo "Have fun and enjoy a bit more privacy!"
 echo
 echo "https://github.com/mglinux/afwall_easy"
-echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+echo "https://github.com/ukanth/afwall"
+echo "https://www.kuketz-blog.de"
+echo "https://notabug.org/maloe/ASN_IPFire_Script"
+echo
+echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
 echo
