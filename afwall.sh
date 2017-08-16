@@ -102,8 +102,12 @@ while read Option2
 do
 case $Option2 in
 1)
+echo
+echo
 path=/storage/emulated/0
 echo "$path/afwscripts will be used"
+echo
+echo
 read -n 1 -s -p "Press any key to continue"
 break
 ;;
