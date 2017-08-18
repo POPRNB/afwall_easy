@@ -33,7 +33,6 @@ rm -R -f afwscripts
 mkdir afwscripts
 ####copy common rules####
 cp default ./afwscripts/aafwall.sh
-cp iptables_off.sh ./afwscripts
 echo "Set DNS Server? Press key [1-4]"
 echo
 echo
@@ -148,6 +147,7 @@ rm ./afwscripts/afwall_rules
 ls -d ./afwscripts/* | xargs -n1 basename > ./afwscripts/cp.txt
 nl -s ". $path/afwscripts/" ./afwscripts/cp.txt | cut -c7- > copy_paste.txt
 rm ./afwscripts/cp.txt
+cp iptables_off.sh ./afwscripts
 clear
 echo "End of script..."
 echo
