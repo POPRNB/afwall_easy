@@ -11,6 +11,10 @@ Simple script for generating ASN Block lists and DNS Server entry for Android AF
 It generates AFWall scripts for blocking connections to google, facebook, whatever you want.
 This gets achieved through setting the corressponding iptables rules.
 
+Following Packages are required to fetch and set the corressponding rules:
+
+Awk, printf, curl
+
 _______________________________________________________________________________________________
 
 Open a terminal window
