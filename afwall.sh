@@ -26,7 +26,7 @@ echo
 read -n 1 -s -p "Press any key to continue"
 clear
 ####make ASN fetching script executable####
-chmod +x asn_ipfire_beta.sh
+chmod +x asn_ipfire.sh
 ####delete and create folder to reset process####
 rm -f copy_paste.txt
 rm -R -f afwscripts
@@ -139,7 +139,7 @@ echo
 read -n 1 -s -p "Press any key to continue"
 echo
 ####start fetching ASNs####
-./asn_ipfire_beta.sh --afwall "$companys"
+./asn_ipfire.sh --afwall "$companys"
 mv afwall_rules.txt ./afwscripts/afwall_rules
 #### split rules at 100 lines. Else afwall could fail on some devices####
 split -l 100 ./afwscripts/afwall_rules ./afwscripts/afwall_rules_
