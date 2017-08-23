@@ -13,7 +13,7 @@ Following **Packages** are **required** to fetch and set the corressponding rule
 
 _______________________________________________________________________________________________
 
-*How to use*
+## *How to use:*
 
 Open a terminal window
 
@@ -37,7 +37,7 @@ ________________________________________________________________________________
 Maybe not all IPs get banned through the ASN block, but at least it's a beginning :-)
 
 
-Thx ukanth, Mike and maloe for the amazing work! :+1:
+***Thx ukanth, Mike and maloe for the amazing work! :+1:***
 
 
 [ukanth AFWall](https://github.com/ukanth/afwall)  			  
