@@ -1,4 +1,3 @@
-# afwall_easy
 [afwall_easy](https://github.com/mglinux/afwall_easy)
 
 **Last update: 22/18/2017**
