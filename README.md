@@ -36,12 +36,15 @@ ________________________________________________________________________________
 Maybe not all IPs get banned through the ASN block, but at least it's a beginning :-)
 
 
-Thx ukanth, Mike and maloe for all your hard work!
+Thx ukanth, Mike and maloe for the amazing work! :+1:
 
-[ukanth AFWall](https://github.com/ukanth/afwall)      (GPLv3)
+
+[ukanth AFWall](https://github.com/ukanth/afwall)  			  
 
 [Mike Kuketz](https://www.kuketz-blog.de/)
 
-[Maloe](https://notabug.org/maloe/ASN_IPFire_Script)   (GPLv3)
+[Maloe](https://notabug.org/maloe/ASN_IPFire_Script) 
 
+
+**License:** AFWall and ASN_IPFire_Script are under [GPLv3](https://www.gnu.org/licenses/gpl.html). afwall_easy script itself has none. Feel free to use any piece of the script itself!
 
