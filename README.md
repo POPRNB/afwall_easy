@@ -1,6 +1,6 @@
 # [afwall_easy](https://github.com/mglinux/afwall_easy)
 
-**Last update: 22/18/2017**
+### **Last update: 22/18/2017**
 
 Simple script for generating [ASN](https://en.wikipedia.org/wiki/Autonomous_system_(Internet)) Block lists and DNS Server entry for Android AFWall.
 
@@ -27,7 +27,7 @@ Run the script with ./afwall.sh
 
 _______________________________________________________________________________________________
 
-## *In Afwall app:*
+#### *In Afwall app:*
 
 Set the DNS proxy to -Disable DNS via netd- (preferences->Binaries->DNS proxy)
 You must allow (Android 5+) -[0] (root) - Apps running as root- in afwall else dns resolving won´t work!
