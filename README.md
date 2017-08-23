@@ -14,6 +14,8 @@ Following **Packages** are **required** to fetch and set the corressponding rule
 
 _______________________________________________________________________________________________
 
+*Usage:
+
 Open a terminal window
 
 git clone https://github.com/mglinux/afwall_easy.git
@@ -26,7 +28,7 @@ Run the script with ./afwall.sh
 
 ===============================================================================================
 
-In Afwall app:
+*In Afwall app:*
 
 Set the DNS proxy to -Disable DNS via netd- (preferences->Binaries->DNS proxy)
 You must allow (Android 5+) -[0] (root) - Apps running as root- in afwall else dns resolving won´t work!
@@ -46,5 +48,5 @@ Thx ukanth, Mike and maloe for the amazing work! :+1:
 [Maloe](https://notabug.org/maloe/ASN_IPFire_Script) 
 
 
-**License:** AFWall and ASN_IPFire_Script are under [GPLv3](https://www.gnu.org/licenses/gpl.html). afwall_easy script itself has none. Feel free to use any piece of the script itself!
+**License:** AFWall and ASN_IPFire_Script are under [GPLv3](https://www.gnu.org/licenses/gpl.html). Afwall_easy script itself has none. Feel free to use any piece of the script itself!
 
