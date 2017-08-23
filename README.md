@@ -13,7 +13,7 @@ Following **Packages** are **required** to fetch and set the corressponding rule
 
 _______________________________________________________________________________________________
 
-*Usage:
+*How to use*
 
 Open a terminal window
 
