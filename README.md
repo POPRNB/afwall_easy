@@ -34,7 +34,7 @@ You must allow (Android 5+) -[0] (root) - Apps running as root- in afwall else d
 
 
 _______________________________________________________________________________________________
-Maybe not all IPs get banned through the ASN block, but at least it's a beginning :-)
+*Since there isn't an update function yet, the script should be run regularly (e.g monthly) to fetch New ASNs for each company you wish to block. But well this happens not that often.*
 
 
 ***Thx ukanth, Mike and maloe for the amazing work! :+1:***
