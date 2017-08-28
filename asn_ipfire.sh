@@ -7,8 +7,8 @@
 #######################################################################
 
 #######################################################################
-  revision="asn_ipfire.sh v0.6.1"                    # do not comment out
-# Last updated: August 22 2017 by maloe
+  revision="asn_ipfire.sh v0.6.2"                    # do not comment out
+# Last updated: August 25 2017 by maloe
 # Author: Mike Kuketz, maloe
 # Visit: www.kuketz-blog.de
 #######################################################################
@@ -36,8 +36,8 @@ file_asn="asn_list.txt"					# output file for ASNs only
 
 #######################################################################
 # Activate sources for ASN or network gathering by adding below defined "Gather_Functions" into the array (space separated).
-getASNfromCOMPANY=(gather_ASN0 gather_ASN1)
-getNETfromASN=(gather_NET0 gather_NET1)
+getASNfromCOMPANY=(gather_ASN0 gather_ASN1)							# Default: (gather_ASN0 gather_ASN1)
+getNETfromASN=(gather_NET0 gather_NET1)								# Default: (gather_NET0 gather_NET1)
 
 # Local files can be used as ASN and/or network sources. To be activated by adding "gather_ASN0" or "gather_NET0" into above array.
 local_asn_file="local_asn_list.txt"		# Note: Each ASN must be in the same row as the corresponding company, e.g. 'AS1234 CompanyA' or 'CompanyA AS1234'
@@ -46,13 +46,18 @@ local_net_file="local_net_list.txt"		# Note: Each network must be in the same ro
 # Gather Functions: add further sources here and activate them in above arrays getASNfromCOMPANY() and getNETfromCOMPANY()
 # ASN sources, function must return a list of ASNs
 	gather_ASN0() {	if [[ -f $local_asn_file ]]; then cat $local_asn_file | grep -i " $1 " | grep -Eo 'AS[0-9]+' ; fi; }														# Get ASN from local file
-	gather_ASN1() {	curl --silent "https://www.ultratools.com/tools/asnInfoResult?domainName=$1" | grep -Eo 'AS[0-9]+' | uniq; }												# Get ASN from ultratools.org
-	gather_ASN2() { curl --silent "http://cidr-report.org/as2.0/autnums.html" | grep -i " $1 " | grep -Eo 'AS[0-9]+'; }															# Get ASN from cidr-report.org
-	gather_ASN3() { curl --silent "http://www.bgplookingglass.com/list-of-autonomous-system-numbers" | sed 's/<br /\n/g' | grep -i " $1 " | grep -Eo 'AS[0-9]+'; }				# Get ASN from bgplookingglass.com
-# Network sources, must return a list of DICR networks
+	gather_ASN1() {	wget -q -O - "https://www.ultratools.com/tools/asnInfoResult?domainName=$1" | grep -Eo 'AS[0-9]+' | uniq; }													# Get ASN from ultratools.org
+	gather_ASN2() { wget -q -O - "http://www.cidr-report.org/as2.0/autnums.html" | grep -i " $1 " | grep -Eo 'AS[0-9]+'; }														# Get ASN from cidr-report.org
+	gather_ASN3() 
+	{ 
+		wget -q -O - "http://www.bgplookingglass.com/list-of-autonomous-system-numbers" | sed 's/<br /\n/g' | grep -i " $1 " | grep -Eo 'AS[0-9]+'								# Get ASN from bgplookingglass.com (part1)
+		wget -q -O - "http://www.bgplookingglass.com/list-of-autonomous-system-numbers-2" | sed 's/<br /\n/g' | grep -i " $1 " | grep -Eo 'AS[0-9]+'							# Get ASN from bgplookingglass.com (part2)
+		wget -q -O - "http://www.bgplookingglass.com/4-byte-asn-names-list" | sed 's/<br /\n/g' | grep -i " $1 " | grep -Eo 'AS[0-9]+'											# Get ASN from bgplookingglass.com (part3)
+	}
+# Network sources, must return a list of CIDR networks
 	gather_NET0() {	if [[ -f $local_net_file ]]; then cat $local_net_file | grep -i " $1 " | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}' | sort -u ; fi; }				# Get networks from local file
-	gather_NET1() { curl --silent "https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=$1" | grep -Eo '([0-9.]+){4}/[0-9]+' | sort -u ; }	# Get networks from stat.ripe.net, rough sorting
-	gather_NET2() { curl --silent "https://ipinfo.io/$1" | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}' | sort -u ; }														# Get networks from ipinfo.io, rough sorting
+	gather_NET1() { wget -q -O - "https://stat.ripe.net/data/announced-prefixes/data.json?preferred_version=1.1&resource=$1" | grep -Eo '([0-9.]+){4}/[0-9]+' | sort -u ; }	# Get networks from stat.ripe.net, rough sorting
+	gather_NET2() { wget -q -O - "https://ipinfo.io/$1" | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}' | sort -u ; }														# Get networks from ipinfo.io, rough sorting
 
 
 # Don't edit anything below
@@ -288,6 +293,7 @@ local_net_file="local_net_list.txt"		# Note: Each network must be in the same ro
 				fi
 			fi
 		done
+		if [ $1 ]; then echo "---[Result written to $output_file]---"; fi											# Resutfile info
 	}
 
 	cleanupNetworks() {																						# Remove entries from ipfire files
@@ -336,7 +342,7 @@ local_net_file="local_net_list.txt"		# Note: Each network must be in the same ro
 		echo "               asn_ipfire.sh --asn \"CompanyA,CompanyB,CompanyC\" "
 		echo
 		echo "FILE = name of a file, containing one or more company names."
-		echo "Company names to be separated by space or line feeds."
+		echo "Company names to be separated by space or line feed."
 		echo "usage example: asn_ipfire.sh -r -f company.lst "
 		echo "               asn_ipfire.sh --network -f company.lst "
 		echo
