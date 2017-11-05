@@ -1,6 +1,6 @@
 # [afwall_easy](https://github.com/mglinux/afwall_easy)
 
-### **Last update: 08/28/2017**
+### **Last update: 11/05/2017**
 
 Simple script for generating [ASN](https://en.wikipedia.org/wiki/Autonomous_system_(Internet)) Block lists and DNS Server entry for Android AFWall.
 

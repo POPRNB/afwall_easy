@@ -36,7 +36,7 @@ file_asn="asn_list.txt"					# output file for ASNs only
 
 #######################################################################
 # Activate sources for ASN or network gathering by adding below defined "Gather_Functions" into the array (space separated).
-getASNfromCOMPANY=(gather_ASN0 gather_ASN1)							# Default: (gather_ASN0 gather_ASN1)
+getASNfromCOMPANY=(gather_ASN0 gather_ASN1 gather_ASN2)							# Default: (gather_ASN0 gather_ASN1)
 getNETfromASN=(gather_NET0 gather_NET1)								# Default: (gather_NET0 gather_NET1)
 
 # Local files can be used as ASN and/or network sources. To be activated by adding "gather_ASN0" or "gather_NET0" into above array.
