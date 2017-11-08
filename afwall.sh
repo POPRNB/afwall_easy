@@ -114,10 +114,11 @@ break
 clear
 ok=no
 while
-    echo "Please enter your path like /storage/sdcard - no / at the end!"
+    echo "Please enter your path like /storage/sdcard"
     echo
-    read -p 'New path:' path
-    echo "Will use: $path/afwscripts"
+    read -p 'New path:' pathinput
+    path=$(echo "/"$pathinput | sed 's/^[/]\+/\//; s/[/]\+$//')
+    echo "Used path: $path/afwscripts"
     read -p "Is this correct? [y/n] " yn
     case $yn in
         [Yy]* )  false;;
@@ -130,16 +131,16 @@ break
 esac
 done
 clear
-echo "Now choose the companys you want to be blocked!"
+echo "Now choose the companies you want to be blocked!"
 echo "Seperate them by comma or space"
 echo "e.g. Google, Facebook, Samsung or Google Facebook ..."
-read companys
-echo $companys "will be blocked"
+read companies
+echo $companies "will be blocked"
 echo
 read -n 1 -s -p "Press any key to continue"
 echo
 ####start fetching ASNs####
-./asn_ipfire.sh --afwall "$companys"
+./asn_ipfire.sh --afwall "$companies"
 mv afwall_rules.txt ./afwscripts/afwall_rules
 #### split rules at 100 lines. Else afwall could fail on some devices####
 split -l 100 ./afwscripts/afwall_rules ./afwscripts/afwall_rules_
