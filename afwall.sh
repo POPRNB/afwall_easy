@@ -132,10 +132,14 @@ esac
 done
 clear
 echo "Now choose the companies you want to be blocked!"
-echo "Seperate them by comma or space"
-echo "e.g. Google, Facebook, Samsung or Google Facebook ..."
+echo "Seperate them by comma without space"
+echo "e.g. Google,Facebook,Samsung ..."
+echo
+echo
 read companies
+echo
 echo $companies "will be blocked"
+echo
 echo
 read -n 1 -s -p "Press any key to continue"
 echo
